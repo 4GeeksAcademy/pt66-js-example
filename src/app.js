@@ -2,42 +2,69 @@
 import "bootstrap";
 import "./style.css";
 
-const parseFaves = () => {
-  const input = document.querySelector("#input");
-  const target = document.querySelector("#faves");
+const books = [
+  {
+    title: "Snow Crash",
+    author: "Neal Stephenson",
+    pub: 1992,
+  },
+  {
+    title: "Neuromancer",
+    author: "William S. Gibson",
+    pub: 1984,
+  },
+  {
+    title: "Cryptonomicon",
+    author: "Neal Stephenson",
+    pub: 1999,
+  },
+  {
+    title: "Why Do Cats Sulk",
+    author: "Arline Bleecker",
+    pub: 1998,
+  },
+  {
+    title: "Pride And Prejudice",
+    author: "Jane Austin",
+    pub: 1813,
+  },
+];
 
-  const favoriteInputs = input.value.split("\n");
-  let favHtml = [];
-
-  for (let fave of favoriteInputs) {
-    let elem = document.createElement("li");
-    elem.innerHTML = fave;
-    elem.style.color = "#09c";
-    favHtml.push(elem);
-  }
-  target.replaceChildren(...favHtml);
+const drawRow = (books) => {
+  return `
+  <div class="row">
+    <div class="col col-8 offset-2">
+        <ol><li>${books.join("</li><li>")}</li></ol>
+    </div>
+  </div>
+  `;
 };
 
-const clearFaves = () => {
-  const target = document.querySelector("#faves");
-  target.innerHTML = "<p>You don't have any favorites!</p>";
+const drawBook = (book) => {
+  return `<div class="book">
+  ${book.title} - ${book.author} - ${book.pub}
+</div>`;
+};
+
+const sortBooks = (books) => {
+  const target = document.querySelector("#target");
+
+  let output = [...books];
+  for (let i = 0; i < books.length; i++) {
+    let book_a = books[i];
+
+    for (let j = 0; j < books.length; j++) {
+      let book_b = books[j];
+
+      target.innerHTML =
+        target.innerHTML + drawRow([drawBook(book_a), drawBook(book_b)]);
+    }
+  }
 };
 
 window.onload = function() {
-  // // document.querySelector lets you store elements
-  // // from your page as variables in JS.
-  // const target = document.querySelector("#target");
-  // target.innerHTML = `<p>This page has been changed from JS.</p>`;
-  //
-  // // document.querySelectorAll lets you select multiple
-  // // elements from your page and iterate over them.
-  // const listItems = document.querySelectorAll("li.favorite_things");
-  // for (let i = 0; i < listItems.length; i++) {
-  //   listItems[i].innerHTML = favorite_things[i];
-  // }
-
-  const button = document.querySelector("#button");
-  button.onclick = parseFaves;
-  const clearBtn = document.querySelector("#clearbtn");
-  clearBtn.onclick = clearFaves;
+  const target = document.querySelector("#target");
+  let shelf = books.map((book) => drawBook(book));
+  target.innerHTML = drawRow(shelf);
+  sortBooks(books);
 };
