@@ -50,21 +50,49 @@ const sortBooks = (books) => {
   const target = document.querySelector("#target");
 
   let output = [...books];
-  for (let i = 0; i < books.length; i++) {
-    let book_a = books[i];
+  let isNotStable = true;
 
-    for (let j = 0; j < books.length; j++) {
-      let book_b = books[j];
+  // We do everything in this loop while
+  // the array is not stable, i.e. a swap happened.
+  while (isNotStable) {
+    // We assume that no swaps will happen
+    isNotStable = false;
 
-      target.innerHTML =
-        target.innerHTML + drawRow([drawBook(book_a), drawBook(book_b)]);
+    // Then we iterate over the array
+    for (let i = 1; i < output.length; i++) {
+      // The lefthand element is the one
+      // earlier in the array, and the
+      // righthand element is the one
+      // that is later in ther array.
+      let left = output[i - 1];
+      let right = output[i];
+
+      // If the left element is larger/later in
+      // the alphabet than the right element,
+      // we need to change their positions.
+      if (left.author > right.author) {
+        // A swap is happening, so we say that
+        // the array isn't stable, i.e. it has
+        // changed on this loop.
+        isNotStable = true;
+
+        // And now we actually swap the items.
+        output[i] = left;
+        output[i - 1] = right;
+      }
+
+      // And now we show the changes in the array.
+      let shelf = output.map((book) => drawBook(book));
+      target.innerHTML = target.innerHTML + drawRow(shelf);
     }
   }
+  return output;
 };
 
 window.onload = function() {
   const target = document.querySelector("#target");
   let shelf = books.map((book) => drawBook(book));
   target.innerHTML = drawRow(shelf);
+  console.table(books);
   sortBooks(books);
 };
