@@ -2,97 +2,88 @@
 import "bootstrap";
 import "./style.css";
 
-const books = [
+const dogs = [
   {
-    title: "Snow Crash",
-    author: "Neal Stephenson",
-    pub: 1992,
+    title: "Look at this cute dog!",
+    image: "https://placedog.net/501",
+    text:
+      "I don't even know what this dog looks like, but they deserve exactly as many pets as they want.",
+    href: "https://www.humanesociety.org/",
+    aText: "Support your local humane society or shelter!",
   },
   {
-    title: "Neuromancer",
-    author: "William S. Gibson",
-    pub: 1984,
+    title: "Look at this cute dog!",
+    image: "https://placedog.net/502",
+    text:
+      "I don't even know what this dog looks like, but they deserve exactly as many pets as they want.",
+    href: "https://www.humanesociety.org/",
+    aText: "Support your local humane society or shelter!",
   },
   {
-    title: "Cryptonomicon",
-    author: "Neal Stephenson",
-    pub: 1999,
-  },
-  {
-    title: "Why Do Cats Sulk",
-    author: "Arline Bleecker",
-    pub: 1998,
-  },
-  {
-    title: "Pride And Prejudice",
-    author: "Jane Austin",
-    pub: 1813,
+    title: "Look at this cute dog!",
+    image: "https://placedog.net/503",
+    text:
+      "I don't even know what this dog looks like, but they deserve exactly as many pets as they want.",
+    href: "https://www.humanesociety.org/",
+    aText: "Support your local humane society or shelter!",
   },
 ];
 
-const drawRow = (books) => {
+const renderCard = ({ title, image, text, href, aText }) => {
   return `
-  <div class="row">
-    <div class="col col-8 offset-2">
-        <ol><li>${books.join("</li><li>")}</li></ol>
+  <div class="card mb-2" style="width: 18rem;">
+    <img src="${image}" class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">${title}</h5>
+      <p class="card-text">${text}</p>
+      <a href="${href}" class="btn btn-primary">${aText}</a>
     </div>
-  </div>
-  `;
+  </div>`;
 };
 
-const drawBook = (book) => {
-  return `<div class="book">
-  ${book.title} - ${book.author} - ${book.pub}
-</div>`;
-};
-
-const sortBooks = (books) => {
-  const target = document.querySelector("#target");
-
-  let output = [...books];
-  let isNotStable = true;
-
-  // We do everything in this loop while
-  // the array is not stable, i.e. a swap happened.
-  while (isNotStable) {
-    // We assume that no swaps will happen
-    isNotStable = false;
-
-    // Then we iterate over the array
-    for (let i = 1; i < output.length; i++) {
-      // The lefthand element is the one
-      // earlier in the array, and the
-      // righthand element is the one
-      // that is later in ther array.
-      let left = output[i - 1];
-      let right = output[i];
-
-      // If the left element is larger/later in
-      // the alphabet than the right element,
-      // we need to change their positions.
-      if (left.author > right.author) {
-        // A swap is happening, so we say that
-        // the array isn't stable, i.e. it has
-        // changed on this loop.
-        isNotStable = true;
-
-        // And now we actually swap the items.
-        output[i] = left;
-        output[i - 1] = right;
-      }
-
-      // And now we show the changes in the array.
-      let shelf = output.map((book) => drawBook(book));
-      target.innerHTML = target.innerHTML + drawRow(shelf);
-    }
+function calculateDiscount(item, quantity) {
+  if (quantity >= 10 && item.category === "clothing") {
+    return item.price * 0.9;
+  } else if (item.category === "clothing") {
+    return item.price * 0.95;
   }
-  return output;
-};
+
+  if (quantity >= 5 && item.category === "electronics") {
+    return item.price * 0.8;
+  } else if (item.category === "electronics") {
+    return item.price * 0.9;
+  }
+
+  return item.price;
+}
+
+function calculateDiscount2(item, quantity) {
+  let discount = 1.0;
+  if (item.category === "clothing") {
+    discount = quantity >= 10 ? 0.9 : 0.95;
+  } else if (item.category === "electronics") {
+    discount = quantity >= 5 ? 0.8 : 0.9;
+  }
+
+  return item.price * discount;
+}
+
+// Programmers only have one joke:
+// There are only two hard problems in CS:
+// The halting problem, naming things, and off by 1 errors.
 
 window.onload = function() {
   const target = document.querySelector("#target");
-  let shelf = books.map((book) => drawBook(book));
-  target.innerHTML = drawRow(shelf);
-  console.table(books);
-  sortBooks(books);
+  target.innerHTML = dogs.map((dog) => renderCard(dog)).join("");
+
+  // Try/catch will hide errors on you!
+  // try {
+  //   console.log(1n / 0n);
+  // } catch (e) {
+  //   console.error("Welp.");
+  //   console.error(e);
+  // }
+
+  // Errors will tell you a lot of what you need to fix them!
+  // console.log(1n / 0n);
 };
