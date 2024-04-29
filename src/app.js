@@ -41,6 +41,11 @@ const renderCard = ({ title, image, text, href, aText }) => {
   </div>`;
 };
 
+/**
+ * Function to calculate the discount on a product.
+ * @param {object} item
+ * @param {number} quantity
+ */
 function calculateDiscount(item, quantity) {
   if (quantity >= 10 && item.category === "clothing") {
     return item.price * 0.9;
