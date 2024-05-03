@@ -105,28 +105,37 @@ const renderCard = ({ title, image, text, href, aText, type, isReversed }) => {
 
   cardDiv.appendChild(bodyElem);
 
-  cardDiv.addEventListener("click", () => {
-    console.log("this is the first listener.");
-  });
-
-  cardDiv.addEventListener("click", () => {
-    console.log("this is the second listener.");
-  });
-
-  cardDiv.addEventListener("mouseenter", () => {
-    console.log("the user has moused over the element.");
-  });
-
-  cardDiv.addEventListener("mouseleave", () => {
-    console.log("the user has stopped mousing over the element.");
-  });
-
   console.log(cardDiv);
   return cardDiv;
 };
 
+const gridLayout = () => {
+  const target = document.querySelector("#target");
+  target.classList.add("grid");
+  const cards = target.querySelectorAll(".card");
+  for (let card of cards) {
+    const body = card.querySelector(".card-body");
+    body.style.display = "none";
+    card.style.width = "100%";
+  }
+};
+
+const columnLayout = () => {
+  const target = document.querySelector("#target");
+  target.classList.remove("grid");
+  const cards = target.querySelectorAll(".card");
+  for (let card of cards) {
+    const body = card.querySelector(".card-body");
+    body.style.display = "block";
+    card.style.width = "18rem";
+  }
+};
+
 window.onload = function() {
   const target = document.querySelector("#target");
+  document.querySelector("#grid").addEventListener("click", gridLayout);
+  document.querySelector("#col").addEventListener("click", columnLayout);
+
   for (let pet of pets) {
     const petCard = renderCard(pet);
     // petCard.style.color = "#09c";
